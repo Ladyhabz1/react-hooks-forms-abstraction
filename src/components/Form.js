@@ -1,21 +1,38 @@
 import React, { useState } from "react";
 
 function Form() {
-  const [firstName, setFirstName] = useState("John");
-  const [lastName, setLastName] = useState("Henry");
+  const [formData, setFormData] = useState({
+    firstName: "Sylvia",
+    lastName: "Woods",
+    email: "",
+    age: "",
+    admin: false,
+  });
 
-  function handleFirstNameChange(event) {
-    setFirstName(event.target.value);
+  function handleChange(event) {
+    const { name, type, value, checked } = event.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   }
 
-  function handleLastNameChange(event) {
-    setLastName(event.target.value);
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log("Form Submitted:", formData);
+    alert("Form submitted successfully!");
   }
 
   return (
-    <form>
-      <input type="text" onChange={handleFirstNameChange} value={firstName} />
-      <input type="text" onChange={handleLastNameChange} value={lastName} />
+    <form onSubmit={handleSubmit}>
+      <input type="text" name="firstName" onChange={handleChange} value={formData.firstName} placeholder="First Name" />
+      <input type="text" name="lastName" onChange={handleChange} value={formData.lastName} placeholder="Last Name" />
+      <input type="email" name="email" onChange={handleChange} value={formData.email} placeholder="Email" />
+      <input type="number" name="age" onChange={handleChange} value={formData.age} placeholder="Age" />
+      <label>
+        Admin:
+        <input type="checkbox" name="admin" onChange={handleChange} checked={formData.admin} />
+      </label>
       <button type="submit">Submit</button>
     </form>
   );
